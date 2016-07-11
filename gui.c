@@ -1,18 +1,21 @@
 #include "gui.h"
 
-/* Renders a statusbar with open filename, filesize in B and current position.*/
-void render_statusbar(char *filename, int filesize) {
+/* Renders a statusbar with open filename, filesize in B and current row.*/
+void renderStatusbar(char *filename, int filesize, int pos) {
     char *buffer = (char*) malloc(sizeof(char) * (W + 1));
 
+    int currentRow = pos / (COLS * BYTES);
+    int maxRow = filesize / (COLS * BYTES);
+
     memset(buffer, '-', W);
-    printf("\n%s\n", buffer);
-    printf("%s (%d B) 2, 33\n", filename, filesize);
+    printf("%s (%d B) %d/%d\n", filename, filesize, currentRow, maxRow);
+    printf("%s\r", buffer);
 
     free(buffer);
 }
 
 /* renders the hex and string representation defined by COLS and BYTES. */
-void render_content(char *content, int len) {
+void renderContent(char *content, int len) {
     char *buffer = (char*) malloc(sizeof(char) * (BYTES * COLS));
 
     /*
@@ -31,7 +34,7 @@ void render_content(char *content, int len) {
             n++;
 
             if(n % COLS == 0) {
-                ascii_readable_str(buffer, BYTES * COLS);
+                asciiReadableStr(buffer, BYTES * COLS);
                 printf("    %s\n", buffer);
                 k = 0;
             }
@@ -43,7 +46,7 @@ void render_content(char *content, int len) {
         for (i = 0; i < (COLS - (n % COLS)); i++)   printf(" ");
         for (i = k; i < BYTES*COLS; i++)            printf("  ");
 
-        ascii_readable_str(buffer, k);
+        asciiReadableStr(buffer, k);
         printf("    %s\n", buffer);
     }
 
@@ -51,7 +54,7 @@ void render_content(char *content, int len) {
 }
 
 /* convert to readable ascii only (32-126) */
-void ascii_readable_str(char *content, int len) {
+void asciiReadableStr(char *content, int len) {
     int i;
     for (i = 0; i <= len; i++) {
         char c = content[i];

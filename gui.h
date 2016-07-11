@@ -9,8 +9,8 @@
 #define COLS    4
 #define BYTES   4
 
-void render_statusbar();
-void render_content();
-void ascii_readable_str();
+void renderStatusbar();
+void renderContent();
+void asciiReadableStr();
 
 #endif
