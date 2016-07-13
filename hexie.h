@@ -2,8 +2,10 @@
 #define HEXIE_H
 
 #include <stdio.h>
-#include "gui.h"
 
-int main(int argc, char **argv);
+#include "gui.h"
+#include "editor.h"
+
+int main();
 
 #endif

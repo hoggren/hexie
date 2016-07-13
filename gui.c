@@ -1,15 +1,11 @@
 #include "gui.h"
 
 /* Renders a statusbar with open filename, filesize in B and current row.*/
-void renderStatusbar(char *filename, int filesize, int pos) {
+void renderStatusbar(char *filename, int filesize, struct Position *pos) {
     char *buffer = (char*) malloc(sizeof(char) * (W + 1));
 
-    int currentRow = pos / (COLS * BYTES);
-    int maxRow = filesize / (COLS * BYTES);
-
-    memset(buffer, '-', W);
-    printf("%s (%d B) %d/%d\n", filename, filesize, currentRow, maxRow);
-    printf("%s\r", buffer);
+    sprintf(buffer, "%s (%d B) %d,%d", filename, filesize, pos->row, pos->col);
+    printf(YELLOW "%-80s\r" RESET, buffer);
 
     free(buffer);
 }

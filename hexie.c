@@ -1,5 +1,4 @@
 #include "hexie.h"
-#include "editor.h"
 
 int main(int argc, char **argv) {
     if(argc < 2) {
@@ -15,7 +14,6 @@ int main(int argc, char **argv) {
     while(1) {
         refreshEditor();
         keyCommandInput();
-        exit(0);
     }
 
     fclose(fp);

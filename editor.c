@@ -1,19 +1,35 @@
 #include "editor.h"
 
+struct Position *_pos;
+Mode mode = COMMAND; // COMMAND APPEND INSERT
+
 FILE *_fp = 0;
+char *_fileBuffer = 0; // hela filen
 const char *_filename = 0;
-int pos = 0;
+
+int _len = 0;
 
 void initEditor(FILE *fp, const char *filename) {
+    getFileLength(fp, &_len);
+
     _fp = fp;
     _filename = filename;
+
+    _pos = malloc(sizeof(struct Position));
+    _pos->row = 0;
+    _pos->col = 0;
+
+    _fileBuffer = malloc(sizeof(char) * _len);
+    getContent(_fp, _fileBuffer, _len);
 }
 
 void refreshEditor() {
-    int len = 0;
-    
-    getFileLength(_fp, &len);
-    renderStatusbar(_filename, len, pos);
+    int contentLength = BYTES * COLS * (H - 1);
+    char *content = (char*) malloc(sizeof(char) * contentLength);
+    memcpy(content, _fileBuffer, contentLength);
+
+    renderContent(_fileBuffer, contentLength);
+    renderStatusbar(_filename, _len, _pos);
 }
 
 void keyCommandInput() {
@@ -21,8 +37,7 @@ void keyCommandInput() {
     static struct termios oldTermios, newTermios;
 
     tcgetattr(STDIN_FILENO, &oldTermios);
-    newTermios = oldTermios;
-
+    tcgetattr(STDIN_FILENO, &newTermios);
     cfmakeraw(&newTermios);
 
     tcsetattr(STDIN_FILENO, TCSANOW, &newTermios);
@@ -43,5 +58,4 @@ void keyCommandInput() {
         default:
             break;
     }
-
 }

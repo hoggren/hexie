@@ -10,7 +10,14 @@
 #include "file.h"
 #include "gui.h"
 
-void initEditor(FILE *fp, const char *filename);
+typedef enum mode_t { INSERT, APPEND, COMMAND } Mode;
+
+struct Position {
+    int row;
+    int col;
+};
+
+void initEditor();
 void refreshEditor();
 void keyCommandInput();
 

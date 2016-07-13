@@ -7,6 +7,5 @@ void getFileLength(FILE *fp, int *len) {
 }
 
 void getContent(FILE *fp, char *buffer, int len) {
-    buffer = (char*) malloc(len);
     fread(buffer, 1, len, fp);
 }
