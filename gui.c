@@ -49,13 +49,12 @@ void renderContent(char *content, int len) {
     int rows = len / (BYTES * COLS);
 
     if(rows < (H - 1)) {
-        int diff = (H - 1) - rows;
+        int diff = (H - 1) - rows - 1; // - 1 bcause of math floor.. eh
 
         for (size_t i = 0; i < diff; i++) {
             printf("\n");
         }
     }
-    printf("%d\n", rows);
 
     free(buffer);
 }
