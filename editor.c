@@ -24,11 +24,18 @@ void initEditor(FILE *fp, const char *filename) {
 }
 
 void refreshEditor() {
-    int contentLength = BYTES * COLS * (H - 1);
-    char *content = (char*) malloc(sizeof(char) * contentLength);
-    memcpy(content, _fileBuffer, contentLength);
+    int pageLength = (BYTES * COLS) * (H - 1);
+    int visibleLength = _pos->row * (BYTES * COLS) + pageLength;
+    int contentLength = pageLength;
 
-    renderContent(_fileBuffer, contentLength);
+    if (_len < visibleLength) {
+        contentLength = pageLength + (_len - visibleLength);
+    }
+
+    char *content = (char*) malloc(sizeof(char) * contentLength);
+    memcpy(content, _fileBuffer + (_pos->row * (BYTES * COLS)), contentLength);
+
+    renderContent(content, contentLength);
     renderStatusbar(_filename, _len, _pos);
 }
 
@@ -55,6 +62,24 @@ void keyCommandInput() {
         case 97: // a
             printf("append\n");
             break;
+        case 27: // 27 / arrow keys returns 3 charcodes, gotta catch 'em all...
+            getchar(); // 91
+            c = getchar(); // (65 up, 66 down, 67 right, 68 left)
+
+            switch (c) {
+                case 65: // up
+                    _pos->row -= (_pos->row > 0) ? 1 : 0;
+                    break;
+                case 66: // down
+                    _pos->row += (_pos->row < (_len / (BYTES * COLS))) ? 1 : 0;
+                    break;
+                case 67: // right
+                    _pos->col += (_pos->col < (BYTES * COLS)) ? 1 : 0;
+                    break;
+                case 68: // left
+                    _pos->col -= (_pos->col > 0) ? 1 : 0;
+                    break;
+            }
         default:
             break;
     }

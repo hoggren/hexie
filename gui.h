@@ -1,6 +1,7 @@
 #ifndef GUI_H
 #define GUI_H
 
+#define MARK   "\x18[47m"
 #define YELLOW "\x1B[33m"
 #define BLUE   "\x1B[34m"
 #define RESET  "\x1B[0m"
