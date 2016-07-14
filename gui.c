@@ -46,10 +46,11 @@ void renderContent(char *content, int len) {
         printf("    %s\n", buffer);
     }
 
+    /* full height with newlines \n */
     int rows = len / (BYTES * COLS);
 
-    if(rows < (H - 1)) {
-        int diff = (H - 1) - rows - 1; // - 1 bcause of math floor.. eh
+    if(rows < (H - 0)) {
+        int diff = (H - 0) - rows - 1; // - 1 bcause of math floor.. eh
 
         for (size_t i = 0; i < diff; i++) {
             printf("\n");
